@@ -1,0 +1,85 @@
+{
+	"inputs": [
+		{
+			"type": "promptString",
+			"id": "github_token",
+			"description": "GitHub Personal Access Token",
+			"password": true
+		}
+	],
+	"servers": {
+		"filesystem": {
+			"command": "npx",
+			"args": [
+				"-y",
+				"@modelcontextprotocol/server-filesystem",
+				"/home/dvyd/dev/personal/alexa-llm"
+			]
+		},
+		"git": {
+			"command": "docker",
+			"args": [
+				"run",
+				"--rm",
+				"-i",
+				"--mount",
+				"type=bind,src=/home/dvyd/personal/alexa-llm,dst=/source-code/alexa-llm",
+				"mcp/git"
+			]
+		},
+		"sqlite": {
+			"command": "docker",
+			"args": [
+				"run",
+				"--rm",
+				"-i",
+				"-v",
+				"mcp-test:/mcp",
+				"mcp/sqlite",
+				"--db-path",
+				"/mcp/test.db"
+			]
+		},
+		"postgres": {
+			"command": "npx",
+			"args": [
+				"-y",
+				"@modelcontextprotocol/server-postgres",
+				"postgresql://postgres:postgres@localhost:5432/postgres"
+			]
+		},
+		"everything": {
+			"command": "npx",
+			"args": ["@modelcontextprotocol/server-everything"],
+			"env": {
+				"hello": "Hello MCP!"
+			}
+		},
+		"playwright": {
+			"command": "npx",
+			"args": ["@playwright/mcp@latest"]
+		},
+		"github": {
+			"command": "docker",
+			"args": [
+				"run",
+				"-i",
+				"--rm",
+				"-e",
+				"GITHUB_PERSONAL_ACCESS_TOKEN",
+				"ghcr.io/github/github-mcp-server"
+			],
+			"env": {
+				"GITHUB_PERSONAL_ACCESS_TOKEN": "${input:github_token}"
+			}
+		},
+		"serverless": {
+			"command": "serverless",
+			"args": ["mcp"]
+		},
+		"local-mcp-server": {
+			"command": "node",
+			"args": ["/home/dvyd/dev/personal/alexa-llm/build/index.js"]
+		}
+	}
+}

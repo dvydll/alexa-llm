@@ -9,6 +9,6 @@ try {
 }
 
 export const {
-	NWS_API_BASE_URL: nwsApiBaseUrl = 'https://api.weather.gov',
-	USER_AGENT: userAgent = 'weather-app/1.0',
+	GEOCODE_API_BASE_URL: geocodeApi = 'https://geocoding-api.open-meteo.com',
+	METEO_API_BASE_URL: meteoApi = 'https://api.open-meteo.com',
 } = env;

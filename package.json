@@ -1,11 +1,12 @@
 {
-	"name": "alexa-llm",
+	"name": "mcp-poc",
 	"version": "1.0.0",
 	"description": "",
 	"type": "module",
 	"main": "src/index.ts",
 	"exports": {
-		".": "src/index.ts"
+		".": "src/index.ts",
+		"sse": "src/server.ts"
 	},
 	"imports": {
 		"#/*": "./src/*"
@@ -19,6 +20,7 @@
 	},
 	"scripts": {
 		"dev": "pnpx tsx .",
+		"dev:server": "pnpx tsx src/server.ts | pino-pretty",
 		"prd": "node --watch build/index.js",
 		"inspector": "pnpx @modelcontextprotocol/inspector node build/index.js",
 		"tools:list": "pnpx @modelcontextprotocol/inspector --method=tools/list --cli node build/index.js",
@@ -34,11 +36,13 @@
 		"@hono/node-server": "^1.14.1",
 		"@modelcontextprotocol/sdk": "^1.10.0",
 		"hono": "^4.7.7",
+		"pino": "^9.6.0",
 		"zod": "^3.24.3"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
 		"@types/node": "^22.14.1",
+		"@types/pino": "^7.0.5",
 		"typescript": "^5.8.3"
 	}
 }

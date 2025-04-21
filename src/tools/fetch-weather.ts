@@ -1,5 +1,6 @@
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
+import { getWeatherByCity } from '../helpers/index.js';
 
 /**
  * Async tool with external API call
@@ -8,13 +9,11 @@ import { z } from 'zod';
 export const fetchWeather = (server: McpServer) =>
 	server.tool(
 		'fetch-weather',
-		'Fetch weather data for a specific city',
-		{ city: z.string().describe('The city for which to fetch weather data') },
-		async ({ city }) => {
-			const response = await fetch(`https://api.weather.com/${city}`);
-			const data = await response.text();
-			return {
-				content: [{ type: 'text', text: data }],
-			};
+		'Obtener el clima de una ciudad',
+		{
+			city: z.string().describe('La ciudad de la que quieres obtener el clima'),
 		},
+		async ({ city }) => ({
+			content: [{ type: 'text', text: await getWeatherByCity(city) }],
+		}),
 	);

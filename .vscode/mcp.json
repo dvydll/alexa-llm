@@ -23,7 +23,7 @@
 				"--rm",
 				"-i",
 				"--mount",
-				"type=bind,src=/home/dvyd/personal/alexa-llm,dst=/source-code/alexa-llm",
+				"type=bind,src=/home/dvyd/dev/personal/alexa-llm/,dst=/mnt",
 				"mcp/git"
 			]
 		},
@@ -77,9 +77,44 @@
 			"command": "serverless",
 			"args": ["mcp"]
 		},
-		"local-mcp-server": {
+		"local-mcp-poc": {
+			"type": "stdio",
 			"command": "node",
 			"args": ["/home/dvyd/dev/personal/alexa-llm/build/index.js"]
+		},
+		"local-mcp-poc-ts": {
+			"type": "stdio",
+			"command": "pnpx",
+			"args": ["tsx", "/home/dvyd/dev/personal/alexa-llm/"]
+		},
+		"sse-mcp-poc": {
+			"type": "sse",
+			"url": ["http://127.0.0.1:3000/"],
+			"method": "POST",
+			"headers": {
+				"Accept": "text/event-stream",
+				"Cache-Control": "no-cache",
+				"Connection": "keep-alive"
+			},
+			"body": {
+				"jsonrpc": "2.0",
+				"method": "initialize",
+				"params": {
+					"protocolVersion": "2025-03-26",
+					"capabilities": {
+						"experimental": {},
+						"sampling": {},
+						"roots": {
+							"listChanged": true
+						}
+					},
+					"clientInfo": {
+						"name": "example-client",
+						"version": "1.0.0"
+					}
+				},
+				"id": 1
+			}
 		}
 	}
 }
